@@ -13,41 +13,24 @@
     // スクロール設定
     msc {
         acceleration-exponent = <0>;      // 0
-        time-to-max-speed-ms = <200>;     // 300
-        delay-ms = <5>;                   // 10
+        time-to-max-speed-ms = <0>;     // 300
+        delay-ms = <0>;                   // 10
     };
+    // エンコーダー：キー
     behaviors {
-        // エンコーダー：キー
         rot_kp: sensor_rotate_kp {
             compatible = "zmk,behavior-sensor-rotate-var";
             #sensor-binding-cells = <2>;
             bindings = <&kp>, <&kp>;
         };
-
-        // エンコーダー：マウススクロール 
+    };
+    // エンコーダー：マウススクロール
+    behaviors {
         rot_msc: sensor_rotate_msc {
-             compatible = "zmk,behavior-sensor-rotate-var";
-             #sensor-binding-cells = <2>;
-             tap-ms = <20>;
-             bindings = <&msc>, <&msc>;
-        };
-
-        // エンコーダー：マウススクロール(MOVE_Y)
-        scroll_move_y: sensor_rotate_msc_for_move_y {
-            compatible = "zmk,behavior-sensor-rotate";
-            #sensor-binding-cells = <0>;
-            bindings = <&msc MOVE_Y(20)>, <&msc MOVE_Y(-20)>;
-            // tap-ms下限メモ Yの値で可変: Y(15) <81>, Y(20) <65>, Y(25) <49>
-            tap-ms = <65>;
-        };
-
-        // エンコーダー：マウススクロール(MOVE_X)
-        scroll_move_x: sensor_rotate_msc_for_move_x {
-            compatible = "zmk,behavior-sensor-rotate";
-            #sensor-binding-cells = <0>;
-            bindings = <&msc MOVE_X(20)>, <&msc MOVE_X(-20)>;
-            // tap-ms下限メモ Xの値で可変: X(15) <81>, X(20) <65>, X(25) <49>
-            tap-ms = <65>;
+            compatible = "zmk,behavior-sensor-rotate-var";
+            #sensor-binding-cells = <2>;
+            tap-ms = <20>;
+            bindings = <&msc>, <&msc>;
         };
     };
 
@@ -59,31 +42,31 @@
     	DEFAULT_WIN {
             bindings = <
                 // Key
-                &mkp MB2   &kp LCTRL   &kp LSHFT    &kp BSPC
-                &mkp MB3   &mo SCROLL &kp LC(N0)   &kp DEL
-                &mkp MB1   &kp TAB    &kp LS(TAB)  &kp RET
+                &kp LA(RIGHT)   &kp ENTER   &kp DEL    &kp BSPC
+                &mkp MB3   &kp LC(V) &kp LC(W)   &kp DEL
+                &kp LA(LEFT)   &kp LC(X)    &kp F5  &kp RET
                 // Mouse
-                &kp LC(C) &kp LC(V)
+                &mkp MB1 &mkp MB2
                 // Stick
-                &kp LS(LC(T)) &kp LS(LC(TAB)) &kp LC(W) &kp LC(TAB)
+                &mkp MB3 &mo SCROLL &mo SCROLL &mo SCROLL
                 // Lever
                 &to DEFAULT_WIN &kp F11 &to DEFAULT_MAC
                 &to DEFAULT_WIN &kp F12 &to DEFAULT_MAC
                 // Side
-                &kp F1 &kp F2 &kp F3 &kp F4
+                &kp F3 &mo DEFAULT_MAC &mo SCROLL &mo DEFAULT_MAC
                 // Back
                 &bt BT_SEL 0 &bt BT_SEL 1
     	    >;
-            sensor-bindings = <&rot_kp LG(Z) LS(LG(Z))>, <&scroll_move_y>, <&rot_kp LG(PLUS) LG(MINUS)>;
+            sensor-bindings = <&rot_kp LS(LC(TAB)) LC(TAB)>, <&rot_msc MOVE_DOWN MOVE_UP>, <&rot_kp RIGHT LEFT>;
     	};
 
         // MacOS用
     	DEFAULT_MAC {
             bindings = <
                 // Key
-                &mkp MB2   &kp LGUI   &kp LSHFT    &kp BSPC
-                &mkp MB3   &mo SCROLL &kp LG(N0)   &kp DEL
-                &mkp MB1   &kp TAB    &kp LS(TAB)  &kp RET
+                &kp SPACE   &kp ENTER   &kp DEL    &kp BSPC
+                &mkp MB3   &kp LC(V) &kp LG(N0)   &kp DEL
+                &kp F2   &kp HOME    &kp END  &kp RET
                 // Mouse
                 &kp LG(C) &kp LG(V)
                 // Stick
@@ -96,16 +79,16 @@
                 // Back
                 &bt BT_SEL 0 &bt BT_SEL 1
     	    >;
-            sensor-bindings = <&rot_kp LG(Z) LS(LG(Z))>, <&scroll_move_y>, <&rot_kp LG(PLUS) LG(MINUS)>;
+            sensor-bindings = <&rot_kp LG(Z) LS(LG(Z))>, <&rot_msc MOVE_DOWN MOVE_UP>, <&rot_kp LG(PLUS) LG(MINUS)>;
     	};
 
         // BT設定、スクロールレイヤー
         SETTINGS {
             bindings = <
                 // Key
-                &none &none &none &none
-                &none &mo SCROLL &none &none
-                &none &none &none &none
+                &bt BT_SEL 1 &bt BT_SEL 4 &none &none
+                &none &bt BT_SEL 3 &none &none
+                &bt BT_SEL 0 &bt BT_SEL 2 &none &none
                 // Mouse
                 &none &none
                 // Stick
@@ -118,7 +101,7 @@
                 // Back
                 &bt BT_CLR_ALL &bt BT_CLR
     	    >;
-            sensor-bindings = <&rot_kp LEFT RIGHT>, <&scroll_move_y>, <&scroll_move_x>;
+            sensor-bindings = <&rot_kp LEFT RIGHT>, <&rot_msc MOVE_DOWN MOVE_UP>, <&rot_msc MOVE_LEFT MOVE_RIGHT>;
     	};
     };
 };
