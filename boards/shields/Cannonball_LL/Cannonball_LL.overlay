@@ -218,9 +218,9 @@
 };
 
 
-// トラックボール設定 (既存のscroller設定)
+// トラックボール設定
 / {
-  trackball_listener_scroll: trackball_listener_scroll { // ← この部分と以下の新しいノードをコピペ
+  trackball_listener {
     compatible = "zmk,input-listener";
     device = <&trackball>;
     scroller {
@@ -230,20 +230,6 @@
           &zip_x_scaler 0 16
           &zip_y_scaler 1 16
           &zip_xy_to_scroll_mapper
-        >;
-    };
-  };
-
-  trackball_listener_mouse: trackball_listener_mouse { // ← この新しいノードも忘れずに
-    compatible = "zmk,input-listener";
-    device = <&trackball>;
-    mouse_move {
-        layers = <0>; // レイヤー0 (DEFAULT_WIN) でのみ有効
-        input-processors = <
-          &zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)
-          &zip_x_scaler 0 16
-          &zip_y_scaler 1 16
-          &zip_xy_to_mouse_mapper
         >;
     };
   };
